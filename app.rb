@@ -25,18 +25,24 @@ end
 #   feature['edible'] == 'POISONOUS'
 # end
 
+types_attr = []
+
 keys.each do |key|
   next if key == 'edible'
 
-  pp "Parametro: #{key}"
-
   types = training_set.uniq{|x| x[key]}.map{|i| i[key]}
+  key_count = 0
 
   types.each do |type|
     type_attrs = training_set.select{|f| f[key] == type }
-    percent = type_attrs.count{|f|  f['edible'] == 'POISONOUS'}.to_f / type_attrs.count.to_f * 100
+    percent = type_attrs.count{|f| f['edible'] == 'POISONOUS'}.to_f / type_attrs.count.to_f * 100
 
-    pp " -> Type #{type} tem #{percent.round(2)}% de cogumelos venenosos de #{type_attrs.count}"
+    if percent > 70 && type_attrs.count > 100
+      pp " -> Cogumelos com #{key} igual a #{type} tem #{percent.round(2)}% de cogumelos venenosos de #{type_attrs.count}"
+      key_count = key_count + type_attrs.count
+    end
+  end
+  if (key_count > 0)
+    pp "#{key} tem #{key_count} casos"
   end
 end
-
