@@ -20,9 +20,11 @@ File.readlines('expanded').each do |line|
   training_set.push(mushroom)
 end
 
-poison_mushrooms = training_set.select do |feature|
-  feature['edible'] == 'POISONOUS'
-end
+# poison_mushrooms = training_set.select do |feature|
+#   feature['edible'] == 'POISONOUS'
+# end
 
-pp poison_mushrooms.uniq{|x| x['cap-shape']}
+cap_shape_types = training_set.uniq{|x| x['cap-shape']}.map{|i| i['cap-shape']}
+cap_shape_count = training_set.count{|f| f['cap-shape'] == "FLAT"}
 
+pp cap_shape_count
