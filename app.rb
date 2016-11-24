@@ -28,16 +28,15 @@ end
 keys.each do |key|
   next if key == 'edible'
 
+  pp "Parametro: #{key}"
+
   types = training_set.uniq{|x| x[key]}.map{|i| i[key]}
 
-  pp key
-  pp types
+  types.each do |type|
+    type_attrs = training_set.select{|f| f[key] == type }
+    percent = type_attrs.count{|f|  f['edible'] == 'POISONOUS'}.to_f / type_attrs.count.to_f * 100
+
+    pp " -> Type #{type} tem #{percent.round(2)}% de cogumelos venenosos de #{type_attrs.count}"
+  end
 end
 
-
-
-cap_shape_flat_count = training_set.count{|f| f['cap-shape'] == "FLAT" }.to_f
-
-cap_shape_count = training_set.count{|f| f['cap-shape'] == "FLAT" && f['edible'] == 'POISONOUS'}.to_f / cap_shape_flat_count * 100
-
-pp cap_shape_count
